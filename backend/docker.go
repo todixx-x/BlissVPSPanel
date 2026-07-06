@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/moby/moby/api/types/container"
 	"github.com/moby/moby/client"
 )
 
@@ -18,13 +17,13 @@ func dockerListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cli.Close()
 
-	containers, err := cli.ContainerList(context.Background(), container.ListOptions{All: true})
+	result, err := cli.ContainerList(context.Background(), client.ContainerListOptions{All: true})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(containers)
+	json.NewEncoder(w).Encode(result.Items)
 }
 
 func dockerActionHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,11 +42,11 @@ func dockerActionHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch action {
 	case "start":
-		actionErr = cli.ContainerStart(ctx, id, container.StartOptions{})
+		_, actionErr = cli.ContainerStart(ctx, id, client.ContainerStartOptions{})
 	case "stop":
-		actionErr = cli.ContainerStop(ctx, id, container.StopOptions{})
+		_, actionErr = cli.ContainerStop(ctx, id, client.ContainerStopOptions{})
 	case "restart":
-		actionErr = cli.ContainerRestart(ctx, id, container.RestartOptions{})
+		_, actionErr = cli.ContainerRestart(ctx, id, client.ContainerRestartOptions{})
 	}
 
 	if actionErr != nil {
@@ -71,7 +70,7 @@ func dockerLogsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cli.Close()
 
-	options := container.LogsOptions{ShowStdout: true, ShowStderr: true, Follow: true, Tail: "100"}
+	options := client.ContainerLogsOptions{ShowStdout: true, ShowStderr: true, Follow: true, Tail: "100"}
 	out, err := cli.ContainerLogs(context.Background(), id, options)
 	if err != nil {
 		return
