@@ -8,9 +8,9 @@ COPY frontend/ ./
 RUN pnpm build
 
 # Stage 2: Build Backend
-FROM golang:1.22-alpine AS backend-builder
+FROM golang:1.24-alpine AS backend-builder
 WORKDIR /app
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download
 COPY backend/ ./backend/
 RUN cd backend && go build -o blisspanel-backend .

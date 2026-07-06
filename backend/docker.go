@@ -6,9 +6,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/client"
+	"github.com/docker/go-connections/nat"
+	"github.com/moby/moby/api/types"
+	"github.com/moby/moby/api/types/container"
+	"github.com/moby/moby/client"
 )
 
 func dockerListHandler(w http.ResponseWriter, r *http.Request) {
