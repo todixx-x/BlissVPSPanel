@@ -13,6 +13,13 @@ BlissPanel is a lightweight, self-hosted web panel for managing Ubuntu VPS and D
 - **Frontend**: React + Tailwind CSS + Xterm.js.
 
 ## Installation
+
+### Using Docker (Recommended)
+```bash
+docker-compose up -d --build
+```
+
+### Manual Installation
 Run the install script as root:
 ```bash
 sudo ./install.sh
