@@ -45,9 +45,9 @@ func dockerActionHandler(w http.ResponseWriter, r *http.Request) {
 	case "start":
 		actionErr = cli.ContainerStart(ctx, id, container.StartOptions{})
 	case "stop":
-		_, actionErr = cli.ContainerStop(ctx, id, container.StopOptions{})
+		actionErr = cli.ContainerStop(ctx, id, container.StopOptions{})
 	case "restart":
-		_, actionErr = cli.ContainerRestart(ctx, id, container.RestartOptions{})
+		actionErr = cli.ContainerRestart(ctx, id, container.RestartOptions{})
 	}
 
 	if actionErr != nil {
