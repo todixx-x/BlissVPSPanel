@@ -3,10 +3,9 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"io"
 	"net/http"
 
-	"github.com/docker/go-connections/nat"
+	"github.com/gorilla/websocket"
 	"github.com/moby/moby/api/types"
 	"github.com/moby/moby/api/types/container"
 	"github.com/moby/moby/client"
@@ -47,9 +46,9 @@ func dockerActionHandler(w http.ResponseWriter, r *http.Request) {
 	case "start":
 		actionErr = cli.ContainerStart(ctx, id, container.StartOptions{})
 	case "stop":
-		actionErr = cli.ContainerStop(ctx, id, container.StopOptions{})
+		_, actionErr = cli.ContainerStop(ctx, id, container.StopOptions{})
 	case "restart":
-		actionErr = cli.ContainerRestart(ctx, id, container.RestartOptions{})
+		_, actionErr = cli.ContainerRestart(ctx, id, container.RestartOptions{})
 	}
 
 	if actionErr != nil {
